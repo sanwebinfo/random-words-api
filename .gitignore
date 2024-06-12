@@ -3,5 +3,3 @@ admin.php
 cache
 cache/
 error_log.txt
-words.sql
-RandomwordsData.csv
