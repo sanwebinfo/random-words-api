@@ -30,7 +30,8 @@ DBPASSWORD=xxxxxxxxxxxxxxxxxx
 - `word.php` Get random Words data in Random Order from MYSQL Database
 - `random.php` Powered by redis cache Store data in redis and Pick random data from redis memory if data not avilable it pick from MYSQL database and stored into redis memory
 - `clean.php` - Clear Redis Cache
-- `/telegram/bot.php` - Telegram Bot for Random Words with Pushbullet Alerts  
+- `/telegram/bot.php` - Telegram Bot for Random Words with Pushbullet Alerts
+- `'fetch.php`' - Get Random Words data from Main Source  
 
 ## Data
 
