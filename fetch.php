@@ -40,6 +40,28 @@ function fetch_data($url) {
     return $output;
 }
 
+/**
+ * Normalize the input word to ASCII.
+ *
+ * @param string $word The input word to be normalized.
+ * @return string|null The normalized word or null if conversion fails.
+ */
+function normalizeToAscii($words) {
+    // Normalize the input word to ASCII
+    $normalized = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $words);
+
+    // Check if iconv returned false (conversion failed)
+    if ($normalized === false) {
+        error_log('iconv failed to convert the word: ' . $words);
+        return null;
+    }
+
+    // Remove non-ASCII characters
+    $normalized = preg_replace('/[^\x20-\x7E]/', '', $normalized);
+
+    return $normalized;
+}
+
 // Function to extract the word and definition using regex
 /**
  * Extract word and definition from HTML using regex
@@ -56,7 +78,8 @@ function scrape_data($html) {
 
     if (preg_match('/<div id="random_word">(.+?)<\/div>/s', $html, $word_match)) {
         $word = trim($word_match[1]);
-        $wordOfDay['word'] = ucfirst($word);
+        $words = ucfirst($word);
+        $wordOfDay['word'] = normalizeToAscii($words);
     }
 
     if (preg_match('/<div id="random_word_definition">(.+?)<\/div>/s', $html, $definition_match)) {
@@ -65,6 +88,7 @@ function scrape_data($html) {
     }
     
     if(!empty($word)) {
+      $word =  normalizeToAscii($words);
       $wordOfDay['pronunciation'] = fetch_pronunciation($word);
     } else {
         $wordOfDay['definition'] = 'Not Found';
@@ -100,7 +124,6 @@ function fetch_pronunciation($word) {
 }
 
 try {
-
     // Random Words API : https://github.com/mcnaveen/Random-Words-API/blob/ee71f105d10686b0dd7b15ec087fe1a56d995876/routes/en.js#L10
     $url = 'https://scraping-source.com/';
     $html = fetch_data($url);
