@@ -26,7 +26,7 @@ function importCsvData(PDO $pdo, string $csvFilePath): void {
 
     $csvData = array_map('str_getcsv', file($csvFilePath));
     $header = array_shift($csvData);
-    $expectedHeader = ['Yogibogeybox', 'Materials used by a spiritualist', 'yojibojeboks'];
+    $expectedHeader = ['word', 'definition', 'pronunciation'];
 
     if (!validateCsvHeader($header, $expectedHeader)) {
         logError("CSV format is incorrect. Expected columns: " . implode(", ", $expectedHeader));
